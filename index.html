@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <title>Love Message</title>
@@ -18,36 +18,35 @@
       left: 50%;
       transform: translate(-50%, -50%);
       padding: 1em 2em;
-      font-size: 1.8em;
-      background: hotpink;
+      font-size: 1.5em;
+      background: pink;
       color: white;
       border: none;
       border-radius: 10px;
       cursor: pointer;
       z-index: 1000;
-      box-shadow: 0 4px 12px rgba(255, 192, 203, 0.5);
+      box-shadow: 0 4px 8px rgba(255, 255, 255, 0.3);
     }
 
     .falling {
       position: absolute;
-      top: -60px;
-      animation: fall 6s linear forwards, swing 2s ease-in-out infinite;
+      top: -50px;
+      animation: fall 6s linear forwards;
       white-space: nowrap;
       pointer-events: none;
-      opacity: 0.95;
     }
 
     .text {
-      color: hotpink;
+      color: pink;
       font-weight: bold;
-      font-size: 28px;
-      z-index: 2;
+      z-index: 1;
+      font-size: 24px;
     }
 
     .heart {
-      font-size: 36px;
+      font-size: 40px;
       color: pink;
-      z-index: 1;
+      z-index: 0;
     }
 
     @keyframes fall {
@@ -55,11 +54,6 @@
         transform: translateY(110vh);
         opacity: 0;
       }
-    }
-
-    @keyframes swing {
-      0%, 100% { transform: translateX(0); }
-      50% { transform: translateX(5px); }
     }
   </style>
 </head>
@@ -70,66 +64,59 @@
 
   <script>
     const messages = [
-      "Nếu buồn hãy nói với mình nha 🌸",
-      "Bạn nhớ ăn uống đầy đủ nha ❤️",
-      "Hello", "Xin chào", "안녕하세요", "Tu comptes pour moi",
-      "Hãy cười thật nhiều", "Đừng chịu uất ức gì nha",
-      "You're enough", "Dream big", "아름다운",
-      "Chúc cậu luôn may mắn 🍀", "J'espère que tout ira bien !",
-      "Cậu sẽ làm được tất cả 💪", "Cậu luôn là người đặc biệt 🦋"
+      "Hello", "Xin Chào", "Bạn nhớ ăn uống đầy đủ nha❤️", "Tu comptes pour moi", "안녕하세요",
+      "Đừng chịu uất ức gì nha", "Nếu bùn hãy nói với mình nha, mình sẽ lắng nghe cậu🌸", "Hãy cười thật nhiều",
+      "아름다운", "Mọi điều may mắn sẽ lun đến với cậu", "Cậu lun thành công với mọi điều cậu mong",
+      "Dream big", "J'espère que tout le meilleur vous parviendra.", "You're enough"
     ];
 
     const playButton = document.getElementById("playButton");
     const music = document.getElementById("bgMusic");
 
-    const slotCount = 50;
-    let activeSlots = new Set();
+    const slotCount = 24; // Tăng số slot ngang
+    let lastUsedSlots = [];
 
-    function getAvailableSlot() {
-      const available = [];
-      for (let i = 0; i < slotCount; i++) {
-        if (!activeSlots.has(i)) {
-          available.push(i);
-        }
+    function getNonOverlappingSlot() {
+      let slot;
+      let attempts = 0;
+      do {
+        slot = Math.floor(Math.random() * slotCount);
+        attempts++;
+      } while (lastUsedSlots.includes(slot) && attempts < 10);
+
+      lastUsedSlots.push(slot);
+      if (lastUsedSlots.length > slotCount / 1.5) {
+        lastUsedSlots.shift();
       }
-      if (available.length === 0) {
-        // Nếu hết slot thì lấy slot ngẫu nhiên tránh bị null
-        return Math.floor(Math.random() * slotCount);
-      }
-      const slot = available[Math.floor(Math.random() * available.length)];
-      activeSlots.add(slot);
-      setTimeout(() => activeSlots.delete(slot), 1200); // Giữ slot 1.2 giây
-      return slot;
+
+      return (slot * (100 / slotCount)) + "%";
     }
 
     function createFallingElement(text, className) {
-      const slot = getAvailableSlot();
       const el = document.createElement("div");
       el.className = `falling ${className}`;
       el.innerText = text;
-      el.style.left = (slot * (100 / slotCount)) + "%";
-      el.style.fontSize = className === "heart" ? "36px" : "28px";
+      el.style.left = getNonOverlappingSlot();
+      el.style.fontSize = (className === "heart" ? "40px" : "24px");
       document.body.appendChild(el);
       setTimeout(() => el.remove(), 7000);
     }
 
     function startRain() {
       setInterval(() => {
-        for (let i = 0; i < 5; i++) {
+        for (let i = 0; i < 3; i++) { // Tăng số lượng chữ mỗi lần
           const msg = messages[Math.floor(Math.random() * messages.length)];
           createFallingElement(msg, "text");
         }
-        if (Math.random() < 0.4) {
+        if (Math.random() < 0.5) {
           createFallingElement("❤️", "heart");
         }
-      }, 400);
+      }, 400); // Tăng tần suất
     }
 
     playButton.addEventListener("click", () => {
       playButton.style.display = "none";
-      music.play().catch(() => {
-        // Nếu âm thanh bị chặn thì vẫn chạy chữ rơi
-      });
+      music.play();
       startRain();
     });
   </script>
