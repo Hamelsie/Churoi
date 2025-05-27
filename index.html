@@ -40,16 +40,17 @@
       color: pink;
       font-weight: bold;
       text-shadow:
-        1px 1px 2px white,
-        -1px -1px 2px white,
-        1px -1px 2px white,
-        -1px 1px 2px white;
+        1px 1px 3px white,
+        -1px -1px 3px white,
+        1px -1px 3px white,
+        -1px 1px 3px white;
       z-index: 1;
-      font-size: 1em;
+      font-size: 24px;
+      font-weight: 900;
     }
 
     .heart {
-      font-size: 2em;
+      font-size: 40px;
       color: pink;
       z-index: 0;
     }
@@ -88,7 +89,7 @@
     const playButton = document.getElementById("playButton");
     const music = document.getElementById("bgMusic");
 
-    const slotCount = 12; // số khe ngang
+    const slotCount = 16; // Tăng khe để tránh đè
     let lastUsedSlots = [];
 
     function getNonOverlappingSlot() {
@@ -112,18 +113,18 @@
       el.className = `falling ${className}`;
       el.innerText = text;
       el.style.left = getNonOverlappingSlot();
-      el.style.fontSize = (className === "heart" ? 24 + Math.random() * 16 : 16 + Math.random() * 6) + "px";
+      el.style.fontSize = (className === "heart" ? "40px" : "24px");
       document.body.appendChild(el);
       setTimeout(() => el.remove(), 7000);
     }
 
     function startRain() {
       setInterval(() => {
-        for (let i = 0; i < 2; i++) {
+        for (let i = 0; i < 1; i++) {
           const msg = messages[Math.floor(Math.random() * messages.length)];
           createFallingElement(msg, "text");
         }
-        if (Math.random() < 0.25) {
+        if (Math.random() < 0.3) {
           createFallingElement("❤️", "heart");
         }
       }, 500);
