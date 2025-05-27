@@ -39,14 +39,8 @@
     .text {
       color: pink;
       font-weight: bold;
-      text-shadow:
-        1px 1px 3px white,
-        -1px -1px 3px white,
-        1px -1px 3px white,
-        -1px 1px 3px white;
       z-index: 1;
       font-size: 24px;
-      font-weight: 900;
     }
 
     .heart {
@@ -70,26 +64,16 @@
 
   <script>
     const messages = [
-      "Hello",
-      "Xin Chào",
-      "Bạn nhớ ăn uống đầy đủ nha❤️",
-      "Tu comptes pour moi",
-      "안녕하세요",
-      "Đừng chịu uất ức gì nha",
-      "Nếu bùn hãy nói với mình nha, mình sẽ lắng nghe cậu🌸",
-      "Hãy cười thật nhiều",
-      "아름다운",
-      "Mọi điều may mắn sẽ lun đến với cậu",
-      "Cậu lun thành công với mọi điều cậu mong",
-      "Dream big",
-      "J'espère que tout le meilleur vous parviendra.",
-      "You're enough"
+      "Hello", "Xin Chào", "Bạn nhớ ăn uống đầy đủ nha❤️", "Tu comptes pour moi", "안녕하세요",
+      "Đừng chịu uất ức gì nha", "Nếu bùn hãy nói với mình nha, mình sẽ lắng nghe cậu🌸", "Hãy cười thật nhiều",
+      "아름다운", "Mọi điều may mắn sẽ lun đến với cậu", "Cậu lun thành công với mọi điều cậu mong",
+      "Dream big", "J'espère que tout le meilleur vous parviendra.", "You're enough"
     ];
 
     const playButton = document.getElementById("playButton");
     const music = document.getElementById("bgMusic");
 
-    const slotCount = 16; // Tăng khe để tránh đè
+    const slotCount = 24; // Tăng số slot ngang
     let lastUsedSlots = [];
 
     function getNonOverlappingSlot() {
@@ -101,7 +85,7 @@
       } while (lastUsedSlots.includes(slot) && attempts < 10);
 
       lastUsedSlots.push(slot);
-      if (lastUsedSlots.length > slotCount / 2) {
+      if (lastUsedSlots.length > slotCount / 1.5) {
         lastUsedSlots.shift();
       }
 
@@ -120,14 +104,14 @@
 
     function startRain() {
       setInterval(() => {
-        for (let i = 0; i < 1; i++) {
+        for (let i = 0; i < 5; i++) { // Tăng số lượng chữ mỗi lần
           const msg = messages[Math.floor(Math.random() * messages.length)];
           createFallingElement(msg, "text");
         }
-        if (Math.random() < 0.3) {
+        if (Math.random() < 0.5) {
           createFallingElement("❤️", "heart");
         }
-      }, 500);
+      }, 400); // Tăng tần suất
     }
 
     playButton.addEventListener("click", () => {
