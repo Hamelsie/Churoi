@@ -92,16 +92,18 @@
           available.push(i);
         }
       }
-      if (available.length === 0) return null;
+      if (available.length === 0) {
+        // Nếu hết slot thì lấy slot ngẫu nhiên tránh bị null
+        return Math.floor(Math.random() * slotCount);
+      }
       const slot = available[Math.floor(Math.random() * available.length)];
       activeSlots.add(slot);
-      setTimeout(() => activeSlots.delete(slot), 1800);
+      setTimeout(() => activeSlots.delete(slot), 1200); // Giữ slot 1.2 giây
       return slot;
     }
 
     function createFallingElement(text, className) {
       const slot = getAvailableSlot();
-      if (slot === null) return;
       const el = document.createElement("div");
       el.className = `falling ${className}`;
       el.innerText = text;
@@ -113,19 +115,21 @@
 
     function startRain() {
       setInterval(() => {
-        for (let i = 0; i < 4; i++) {
+        for (let i = 0; i < 5; i++) {
           const msg = messages[Math.floor(Math.random() * messages.length)];
           createFallingElement(msg, "text");
         }
         if (Math.random() < 0.4) {
           createFallingElement("❤️", "heart");
         }
-      }, 450);
+      }, 400);
     }
 
     playButton.addEventListener("click", () => {
       playButton.style.display = "none";
-      music.play();
+      music.play().catch(() => {
+        // Nếu âm thanh bị chặn thì vẫn chạy chữ rơi
+      });
       startRain();
     });
   </script>
