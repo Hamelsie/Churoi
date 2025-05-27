@@ -113,11 +113,11 @@
 
     function startRain() {
       setInterval(() => {
-        for (let i = 0; i < 1; i++) {
+        for (let i = 0; i < 2; i++) {
           const msg = messages[Math.floor(Math.random() * messages.length)];
           createFallingElement(msg, "text");
         }
-        if (Math.random() < 0.3) {
+        if (Math.random() < 0.4) {
           createFallingElement("❤️", "heart");
         }
       }, 500);
