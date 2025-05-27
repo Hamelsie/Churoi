@@ -64,19 +64,19 @@
 
   <script>
     const messages = [
-      "Cậu lun thành công với mọi điều cậu mong",
       "Hello",
       "Xin Chào",
       "Bạn nhớ ăn uống đầy đủ nha❤️",
       "Tu comptes pour moi",
       "안녕하세요",
       "Đừng chịu uất ức gì nha",
+      "Nếu bùn hãy nói với mình nha, mình sẽ lắng nghe cậu🌸",
       "Hãy cười thật nhiều",
       "아름다운",
       "Mọi điều may mắn sẽ lun đến với cậu",
+      "Cậu lun thành công với mọi điều cậu mong",
       "Dream big",
-      "J'espère que tout le meilleur vous parviendra.",
-      "Nếu bùn hãy nói với mình nha, mình sẽ lắng nghe cậu🌸",
+      "J'espère que tout le meilleur vous parviendra."
     ];
 
     const playButton = document.getElementById("playButton");
@@ -113,7 +113,7 @@
 
     function startRain() {
       setInterval(() => {
-        for (let i = 0; i < 2; i++) {
+        for (let i = 0; i < 1; i++) {
           const msg = messages[Math.floor(Math.random() * messages.length)];
           createFallingElement(msg, "text");
         }
