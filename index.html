@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -73,6 +72,7 @@
       "Hello",
       "Xin Chào",
       "Bạn nhớ ăn uống đầy đủ nha❤️",
+      "Tu comptes pour moi",
       "안녕하세요",
       "Đừng chịu uất ức gì nha",
       "Nếu bùn hãy nói với mình nha, mình sẽ lắng nghe cậu🌸",
@@ -81,35 +81,37 @@
       "Mọi điều may mắn sẽ lun đến với cậu",
       "Cậu lun thành công với mọi điều cậu mong",
       "Dream big",
+      "J'espère que tout le meilleur vous parviendra.",
       "You're enough"
     ];
 
     const playButton = document.getElementById("playButton");
     const music = document.getElementById("bgMusic");
 
-    let lastLeftPositions = [];
+    const slotCount = 12; // số khe ngang
+    let lastUsedSlots = [];
 
-    function getNonOverlappingLeft() {
-      let left;
+    function getNonOverlappingSlot() {
+      let slot;
       let attempts = 0;
       do {
-        left = Math.floor(Math.random() * 90); 
+        slot = Math.floor(Math.random() * slotCount);
         attempts++;
-      } while (lastLeftPositions.includes(left) && attempts < 10);
+      } while (lastUsedSlots.includes(slot) && attempts < 10);
 
-      lastLeftPositions.push(left);
-      if (lastLeftPositions.length > 10) {
-        lastLeftPositions.shift();
+      lastUsedSlots.push(slot);
+      if (lastUsedSlots.length > slotCount / 2) {
+        lastUsedSlots.shift();
       }
 
-      return left + "%";
+      return (slot * (100 / slotCount)) + "%";
     }
 
     function createFallingElement(text, className) {
       const el = document.createElement("div");
       el.className = `falling ${className}`;
       el.innerText = text;
-      el.style.left = getNonOverlappingLeft();
+      el.style.left = getNonOverlappingSlot();
       el.style.fontSize = (className === "heart" ? 24 + Math.random() * 16 : 16 + Math.random() * 6) + "px";
       document.body.appendChild(el);
       setTimeout(() => el.remove(), 7000);
