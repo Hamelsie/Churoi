@@ -64,16 +64,25 @@
 
   <script>
     const messages = [
-      "Hello", "Xin Chào", "Bạn nhớ ăn uống đầy đủ nha❤️", "Tu comptes pour moi", "안녕하세요",
-      "Đừng chịu uất ức gì nha", "Nếu bùn hãy nói với mình nha, mình sẽ lắng nghe cậu🌸", "Hãy cười thật nhiều",
-      "아름다운", "Mọi điều may mắn sẽ lun đến với cậu", "Cậu lun thành công với mọi điều cậu mong",
-      "Dream big", "J'espère que tout le meilleur vous parviendra.", "You're enough"
+      "Cậu lun thành công với mọi điều cậu mong",
+      "Hello",
+      "Xin Chào",
+      "Bạn nhớ ăn uống đầy đủ nha❤️",
+      "Tu comptes pour moi",
+      "안녕하세요",
+      "Đừng chịu uất ức gì nha",
+      "Hãy cười thật nhiều",
+      "아름다운",
+      "Mọi điều may mắn sẽ lun đến với cậu",
+      "Dream big",
+      "J'espère que tout le meilleur vous parviendra.",
+      "Nếu bùn hãy nói với mình nha, mình sẽ lắng nghe cậu🌸",
     ];
 
     const playButton = document.getElementById("playButton");
     const music = document.getElementById("bgMusic");
 
-    const slotCount = 24; // Tăng số slot ngang
+    const slotCount = 16;
     let lastUsedSlots = [];
 
     function getNonOverlappingSlot() {
@@ -85,7 +94,7 @@
       } while (lastUsedSlots.includes(slot) && attempts < 10);
 
       lastUsedSlots.push(slot);
-      if (lastUsedSlots.length > slotCount / 1.5) {
+      if (lastUsedSlots.length > slotCount / 2) {
         lastUsedSlots.shift();
       }
 
@@ -104,14 +113,14 @@
 
     function startRain() {
       setInterval(() => {
-        for (let i = 0; i < 3; i++) { // Tăng số lượng chữ mỗi lần
+        for (let i = 0; i < 2; i++) {
           const msg = messages[Math.floor(Math.random() * messages.length)];
           createFallingElement(msg, "text");
         }
-        if (Math.random() < 0.5) {
+        if (Math.random() < 0.3) {
           createFallingElement("❤️", "heart");
         }
-      }, 400); // Tăng tần suất
+      }, 500);
     }
 
     playButton.addEventListener("click", () => {
