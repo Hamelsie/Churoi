@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Love Message</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: black;
+      overflow: hidden;
+      font-family: Arial, sans-serif;
+    }
+
+    #playButton {
+      position: absolute;
+      top: 40%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      padding: 1em 2em;
+      font-size: 1.5em;
+      background: pink;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      z-index: 1000;
+      box-shadow: 0 4px 8px rgba(255, 255, 255, 0.3);
+    }
+
+    .falling {
+      position: absolute;
+      top: -50px;
+      animation: fall 6s linear forwards;
+      white-space: nowrap;
+      pointer-events: none;
+    }
+
+    .text {
+      color: pink;
+      font-weight: bold;
+      text-shadow:
+        1px 1px 2px white,
+        -1px -1px 2px white,
+        1px -1px 2px white,
+        -1px 1px 2px white;
+      z-index: 1;
+      font-size: 1em;
+    }
+
+    .heart {
+      font-size: 2em;
+      color: pink;
+      z-index: 0;
+    }
+
+    @keyframes fall {
+      to {
+        transform: translateY(110vh);
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <button id="playButton">Play</button>
+  <audio id="bgMusic" src="ANH CHẲNG THỂ _ Phạm Kỳ _ OFFICIAL MV.mp3"></audio>
+
+  <script>
+    const messages = [
+      "Hello",
+      "I love you",
+      "Remember to eat and drink enough",
+      "Don't let yourself be disadvantaged",
+      "You are loved",
+      "Take care of yourself",
+      "Smile today!",
+      "Stay strong",
+      "Dream big",
+      "You're enough"
+    ];
+
+    const playButton = document.getElementById("playButton");
+    const music = document.getElementById("bgMusic");
+
+    // Theo dõi vị trí chữ đã dùng gần nhất
+    let lastLeftPositions = [];
+
+    function getNonOverlappingLeft() {
+      let left;
+      let attempts = 0;
+      do {
+        left = Math.floor(Math.random() * 90); // % từ 0 đến 90
+        attempts++;
+      } while (lastLeftPositions.includes(left) && attempts < 10);
+
+      lastLeftPositions.push(left);
+
+      // Chỉ lưu 10 vị trí gần nhất để tránh đè lên nhau
+      if (lastLeftPositions.length > 10) {
+        lastLeftPositions.shift();
+      }
+
+      return left + "%";
+    }
+
+    function createFallingElement(text, className) {
+      const el = document.createElement("div");
+      el.className = `falling ${className}`;
+      el.innerText = text;
+      el.style.left = getNonOverlappingLeft();
+      el.style.fontSize = (className === "heart" ? 24 + Math.random() * 16 : 16 + Math.random() * 6) + "px";
+      document.body.appendChild(el);
+      setTimeout(() => el.remove(), 7000);
+    }
+
+    function startRain() {
+      setInterval(() => {
+        // Rơi nhiều chữ hơn
+        for (let i = 0; i < 2; i++) {
+          const msg = messages[Math.floor(Math.random() * messages.length)];
+          createFallingElement(msg, "text");
+        }
+
+        // Ít trái tim hơn
+        if (Math.random() < 0.25) {
+          createFallingElement("❤️", "heart");
+        }
+      }, 500);
+    }
+
+    playButton.addEventListener("click", () => {
+      playButton.style.display = "none";
+      music.play();
+      startRain();
+    });
+  </script>
+
+</body>
+</html>
